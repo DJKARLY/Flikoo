@@ -1,0 +1,116 @@
+
+/* General */
+body {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Pantallas */
+.screen {
+  max-width: 400px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+/* Inputs */
+input[type="text"], input[type="file"] {
+  width: 80%;
+  padding: 12px 15px;
+  margin: 15px 0 20px 0;
+  border: 2px solid #fda085;
+  border-radius: 10px;
+  font-size: 18px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="file"]:focus {
+  border-color: #f6d365;
+}
+
+/* Botón */
+.btn {
+  background: #fda085;
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  font-size: 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(253, 160, 133, 0.6);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+  background: #f6d365;
+  box-shadow: 0 8px 25px rgba(246, 211, 101, 0.8);
+}
+
+/* Galería */
+#gallery {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Contenedor de cada imagen */
+.image-container {
+  position: relative;
+  display: inline-block;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+  background: white;
+}
+
+.image-container:hover {
+  transform: scale(1.05);
+}
+
+/* Imagen */
+.image-container img {
+  display: block;
+  max-width: 200px;
+  border-radius: 15px 15px 0 0;
+  user-select: none;
+}
+
+/* Reacciones */
+.reactions {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  background: #fda085;
+  border-radius: 0 0 15px 15px;
+}
+
+.reactions button {
+  background: white;
+  border: none;
+  font-size: 24px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  transition: background 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.reactions button:hover {
+  background: #f6d365;
+}
+
+/

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Flikoo</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+      color: #333;
+      padding: 20px;
+      text-align: center;
+    }
+    label {
+      font-size: 1.5em;
+      user-select: none;
+    }
+    input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    #qrContainer {
+      margin-top: 30px;
+    }
+    a.btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 25px;
+      background: #fda085;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(253, 160, 133, 0.7);
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    a.btn:hover {
+      background: #f6d365;
+    }
+  </style>
+</head>
+<body>
+  <h1>Panel Administrador - Flikoo</h1>
+  <label>
+    <input type="checkbox" id="uploadToggle" />
+    Permitir subir fotos
+  </label>
+
+  <div id="qrContainer"></div>
+
+  <!-- Enlace a la galería -->
+  <a href="galeria.html" target="_blank" class="btn">Ver Galería</a>
+
+  <!-- Librería QR -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    const uploadToggle = document.getElementById('uploadToggle');
+    const qrContainer = document.getElementById('qrContainer');
+    const uploadUrl = window.location.origin + '/index.html';
+
+    function updateQr() {
+      qrContainer.innerHTML = '';
+      if (uploadToggle.checked) {
+        QRCode.toCanvas(uploadUrl, { width: 200 }, function (error, canvas) {
+          if (error) console.error(error);
+          else qrContainer.appendChild(canvas);
+        });
+      }
+    }
+
+    uploadToggle.addEventListener('change', () => {
+      localStorage.setItem('uploadAllowed', uploadToggle.checked);
+      updateQr();
+    });
+
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('uploadAllowed') === 'true';
+      uploadToggle.checked = saved;
+      updateQr();
+    });
+  </script>
+</body>
+</html>

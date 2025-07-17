@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flikoo - Subir Fotos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="screen" id="loginScreen">
+    <h1>¡Bienvenido a Flikoo!</h1>
+    <input type="text" id="nameInput" placeholder="Ingresa tu nombre" />
+    <button id="startBtn" class="btn">¡Comenzar!</button>
+  </div>
+
+  <div class="screen" id="uploadScreen" style="display:none;">
+    <h2>Hola, <span id="userName"></span> 👋</h2>
+    <p>Subí tu foto del evento</p>
+    <input type="file" id="fileInput" accept="image/*" multiple />
+    <div id="gallery"></div>
+
+    <!-- Enlace para ver la galería -->
+    <a href="galeria.html" target="_blank" class="btn" style="display:block; margin-top: 20px; font-weight: bold;">
+      Ver Galería
+    </a>
+  </div>
+
+  <p id="uploadClosedMsg" style="display:none; color: #d9534f; font-weight: bold; margin-top: 15px;">
+    Lo sentimos, el período para subir fotos ya finalizó.
+  </p>
+
+  <script src="app.js"></script>
+</body>
+</html>

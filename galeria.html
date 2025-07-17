@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galería - Flikoo</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: white;
+      user-select: none;
+    }
+    #slideImage {
+      max-width: 100vw;
+      max-height: 100vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.7);
+      user-select: none;
+    }
+    .nav-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(253, 160, 133, 0.8);
+      border: none;
+      padding: 20px 25px;
+      font-size: 3em;
+      border-radius: 50%;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 5px 15px rgba(253, 160, 133, 0.6);
+      user-select: none;
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
+    .nav-btn:hover {
+      background: rgba(246, 211, 101, 0.9);
+    }
+    #prevBtn {
+      left: 30px;
+    }
+    #nextBtn {
+      right: 30px;
+    }
+    #positionIndicator {
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 0 5px black;
+      user-select: none;
+    }
+    #noPhotosMsg {
+      font-size: 1.5em;
+      color: #f44336;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <img id="slideImage" src="" alt="Foto" />
+  <button id="prevBtn" class="nav-btn" title="Anterior">‹</button>
+  <button id="nextBtn" class="nav-btn" title="Siguiente">›</button>
+  <div id="positionIndicator"></div>
+  <p id="noPhotosMsg" style="display:none;">No hay fotos aprobadas para mostrar.</p>
+
+  <script>
+    const slideImage = document.getElementById('slideImage');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const positionIndicator = document.getElementById('positionIndicator');
+    const noPhotosMsg = document.getElementById('noPhotosMsg');
+
+    let photos = JSON.parse(localStorage.getItem('flikooApprovedPhotos') || '[]');
+    let currentIndex = 0;
+    let slideInterval;
+
+    function showPhoto(index) {
+      if (photos.length === 0) return;
+      slideImage.src = photos[index];
+      positionIndicator.textContent = `Foto ${index + 1} de ${photos.length}`;
+    }
+
+    function nextPhoto() {
+      currentIndex = (currentIndex + 1) % photos.length;
+      showPhoto(currentIndex);
+    }
+
+    function prevPhoto() {
+      currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+      showPhoto(currentIndex);
+    }
+
+    function startSlideshow() {
+      slideInterval = setInterval(nextPhoto, 5000);
+    }
+
+    function stopSlideshow() {
+      clearInterval(slideInterval);
+    }
+
+    function initGallery() {
+      if (photos.length === 0) {
+        noPhotosMsg.style.display = 'block';
+        slideImage.style.display = 'none';
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        positionIndicator.style.display = 'none';
+        return;
+      }
+      noPhotosMsg.style.display = 'none';
+      slideImage.style.display = 'block';
+      prevBtn.style.display = 'block';
+      nextBtn.style.display = 'block';
+      positionIndicator.style.display = 'block';
+      showPhoto(currentIndex);
+      startSlideshow();
+    }
+
+    prevBtn.addEventListener('click', () => {
+      stopSlideshow();
+      prevPhoto();
+      startSlideshow();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      stopSlideshow();
+      nextPhoto();
+      startSlideshow();
+    });
+
+    window.addEventListener('load', initGallery);
+  </script>
+</body>
+</html>
