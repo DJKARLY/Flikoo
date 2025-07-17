@@ -15,14 +15,9 @@ let uploadAllowed = false;
 
 // Verificar permiso de subida guardado en localStorage
 function checkUploadPermission() {
-  uploadAllowed = localStorage.getItem('uploadAllowed') === 'true';
-  if (!uploadAllowed) {
-    uploadScreen.style.display = 'none';
-    uploadClosedMsg.style.display = 'block';
-  } else {
-    uploadClosedMsg.style.display = 'none';
-    uploadScreen.style.display = 'block';
-  }
+  uploadAllowed = true;  // Siempre permito subir fotos
+  uploadClosedMsg.style.display = 'none';
+  uploadScreen.style.display = 'block';
 }
 
 // Mostrar pantalla de login y ocultar la de subida
