@@ -1,76 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Flikoo</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: #f8f8f8;
-      color: #333;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #ffe8f0, #fff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
+
     #loginScreen, #uploadScreen, #uploadClosedMsg {
-      padding: 20px;
-      max-width: 500px;
-      margin: 60px auto;
       background: white;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      animation: fadeIn 0.6s ease;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2, h3 {
+      color: #ff3366;
+    }
+
     input[type="text"], input[type="file"] {
-      display: block;
+      padding: 12px;
       width: 100%;
-      margin-top: 12px;
-      padding: 10px;
       font-size: 16px;
-    }
-    button {
       margin-top: 16px;
-      padding: 10px 20px;
-      background: #ff3366;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #ff3366;
       color: white;
       border: none;
       border-radius: 8px;
-      font-size: 16px;
       cursor: pointer;
+      transition: background 0.3s;
     }
+
+    button:hover {
+      background-color: #e52d5e;
+    }
+
     #gallery {
-      margin-top: 20px;
+      margin-top: 24px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
     }
+
     #gallery img {
-      width: 120px;
-      margin: 8px;
+      width: 100px;
+      margin: 6px;
       border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
     }
+
     .hidden {
       display: none;
+    }
+
+    .adminLabel {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #444;
+      background: #ffe0ec;
+      padding: 6px 12px;
+      border-radius: 8px;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
-  <!-- Pantalla de Login -->
+
+  <!-- Pantalla de inicio -->
   <div id="loginScreen">
-    <h2>Bienvenido a Flikoo</h2>
-    <p>Ingrese su nombre para comenzar:</p>
+    <h2>Bienvenido a Flikoo 📸</h2>
+    <p>Ingresá tu nombre para empezar:</p>
     <input type="text" id="nameInput" placeholder="Tu nombre o código de administrador" />
     <button id="startBtn">Comenzar</button>
   </div>
 
-  <!-- Pantalla de subida -->
+  <!-- Pantalla principal de carga -->
   <div id="uploadScreen" class="hidden">
-    <h2>Hola <span id="userName"></span> 👋</h2>
-    <p>Subí tus fotos para el evento:</p>
-    <input type="file" id="fileInput" multiple accept="image/*" />
+    <h2>¡Hola <span id="userName"></span>!</h2>
+    <span id="adminLabel" class="adminLabel hidden">🛠 Modo Administrador</span>
+    <p>Subí tus fotos favoritas del evento:</p>
+    <input type="file" id="fileInput" multiple accept="image/*">
     <div id="gallery"></div>
   </div>
 
-  <!-- Mensaje si las subidas están cerradas -->
+  <!-- Mensaje si la carga está cerrada -->
   <div id="uploadClosedMsg" class="hidden">
     <h3>La subida de fotos está cerrada por el momento.</h3>
   </div>
