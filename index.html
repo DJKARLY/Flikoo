@@ -2,32 +2,78 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Flikoo - Subir Fotos</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flikoo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f8f8f8;
+      color: #333;
+    }
+    #loginScreen, #uploadScreen, #uploadClosedMsg {
+      padding: 20px;
+      max-width: 500px;
+      margin: 60px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input[type="text"], input[type="file"] {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 16px;
+      padding: 10px 20px;
+      background: #ff3366;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #gallery {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #gallery img {
+      width: 120px;
+      margin: 8px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="screen" id="loginScreen">
-    <h1>¡Bienvenido a Flikoo!</h1>
-    <input type="text" id="nameInput" placeholder="Ingresa tu nombre" />
-    <button id="startBtn" class="btn">¡Comenzar!</button>
+  <!-- Pantalla de Login -->
+  <div id="loginScreen">
+    <h2>Bienvenido a Flikoo</h2>
+    <p>Ingrese su nombre para comenzar:</p>
+    <input type="text" id="nameInput" placeholder="Tu nombre o código de administrador" />
+    <button id="startBtn">Comenzar</button>
   </div>
 
-  <div class="screen" id="uploadScreen" style="display:none;">
-    <h2>Hola, <span id="userName"></span> 👋</h2>
-    <p>Subí tu foto del evento</p>
-    <input type="file" id="fileInput" accept="image/*" multiple />
+  <!-- Pantalla de subida -->
+  <div id="uploadScreen" class="hidden">
+    <h2>Hola <span id="userName"></span> 👋</h2>
+    <p>Subí tus fotos para el evento:</p>
+    <input type="file" id="fileInput" multiple accept="image/*" />
     <div id="gallery"></div>
-
-    <!-- Enlace para ver la galería -->
-    <a href="galeria.html" target="_blank" class="btn" style="display:block; margin-top: 20px; font-weight: bold;">
-      Ver Galería
-    </a>
   </div>
 
-  <p id="uploadClosedMsg" style="display:none; color: #d9534f; font-weight: bold; margin-top: 15px;">
-    Lo sentimos, el período para subir fotos ya finalizó.
-  </p>
+  <!-- Mensaje si las subidas están cerradas -->
+  <div id="uploadClosedMsg" class="hidden">
+    <h3>La subida de fotos está cerrada por el momento.</h3>
+  </div>
 
   <script src="app.js"></script>
 </body>

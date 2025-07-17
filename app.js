@@ -1,30 +1,7 @@
-// app.js
-
-// Contraseña para el acceso administrador
-const ADMIN_PASSWORD = 'Flikoo123';
-
-// Verifica si el acceso admin está autorizado
-function checkAdminAccess() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const isAdminParam = urlParams.get('admin') === 'true';
-
-  if (isAdminParam) {
-    let enteredPassword = prompt('Ingrese la contraseña de administrador:');
-    if (enteredPassword !== ADMIN_PASSWORD) {
-      alert('Contraseña incorrecta. Acceso denegado.');
-      window.location.href = window.location.origin; // Redirige a página principal
-      return false;
-    }
-    return true;
-  }
-  return false;
-}
-
-const isAdmin = checkAdminAccess();
-
 // Elementos del DOM
 const loginScreen = document.getElementById('loginScreen');
 const uploadScreen = document.getElementById('uploadScreen');
+const adminScreen = document.getElementById('adminScreen');
 const nameInput = document.getElementById('nameInput');
 const startBtn = document.getElementById('startBtn');
 const userNameSpan = document.getElementById('userName');
@@ -33,29 +10,46 @@ const galleryDiv = document.getElementById('gallery');
 const uploadClosedMsg = document.getElementById('uploadClosedMsg');
 
 let userName = '';
-let uploadAllowed = true; // Siempre permitido
+let uploadAllowed = false;
 
 // Verificar permiso de subida guardado en localStorage
 function checkUploadPermission() {
-  uploadAllowed = true;  // Siempre permito subir fotos
-  uploadClosedMsg.style.display = 'none';
-  uploadScreen.style.display = 'block';
+  uploadAllowed = localStorage.getItem('uploadAllowed') === 'true';
+  if (!uploadAllowed) {
+    uploadScreen.style.display = 'none';
+    uploadClosedMsg.style.display = 'block';
+  } else {
+    uploadClosedMsg.style.display = 'none';
+    uploadScreen.style.display = 'block';
+  }
 }
 
-// Mostrar pantalla de login y ocultar la de subida
+// Mostrar pantalla de login y ocultar todo lo demás
 function showLogin() {
   loginScreen.style.display = 'block';
   uploadScreen.style.display = 'none';
   uploadClosedMsg.style.display = 'none';
+  adminScreen.style.display = 'none';
 }
 
-// Mostrar pantalla de subida y ocultar login
+// Mostrar pantalla de subida si está permitido
 function showUpload() {
   loginScreen.style.display = 'none';
+  adminScreen.style.display = 'none';
   checkUploadPermission();
-  if (uploadAllowed) {
-    uploadScreen.style.display = 'block';
-  }
+}
+
+// Mostrar pantalla de administrador
+function showAdmin() {
+  loginScreen.style.display = 'none';
+  uploadScreen.style.display = 'none';
+  uploadClosedMsg.style.display = 'none';
+  adminScreen.style.display = 'block';
+}
+
+// Volver al login desde el admin
+function backToLogin() {
+  showLogin();
 }
 
 // Cuando el usuario ingresa nombre y pulsa comenzar
@@ -65,12 +59,18 @@ startBtn.addEventListener('click', () => {
     alert('Por favor, ingresa tu nombre.');
     return;
   }
+
+  if (name === 'Flikoo123') {
+    showAdmin();
+    return;
+  }
+
   userName = name;
   userNameSpan.textContent = userName;
   showUpload();
 });
 
-// Función para leer archivo como base64
+// Leer archivo como base64
 function readFileAsDataURL(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -80,7 +80,7 @@ function readFileAsDataURL(file) {
   });
 }
 
-// Guardar fotos aprobadas
+// Guardar foto como aprobada directamente
 async function savePhoto(file) {
   try {
     const dataUrl = await readFileAsDataURL(file);
@@ -105,6 +105,47 @@ function addPhotoToGallery(dataUrl) {
   galleryDiv.appendChild(img);
 }
 
-// Cargar fotos aprobadas al iniciar
+// Cargar fotos ya aprobadas
 function loadApprovedPhotos() {
-  galleryDiv.inne
+  galleryDiv.innerHTML = '';
+  let approvedPhotos = JSON.parse(localStorage.getItem('flikooApprovedPhotos') || '[]');
+  approvedPhotos.forEach(photo => addPhotoToGallery(photo));
+}
+
+// Subida de fotos
+fileInput.addEventListener('change', async (e) => {
+  if (!uploadAllowed) {
+    alert('No está permitido subir fotos en este momento.');
+    fileInput.value = '';
+    return;
+  }
+
+  const files = Array.from(e.target.files);
+  if (files.length === 0) return;
+
+  for (const file of files) {
+    if (!file.type.startsWith('image/')) {
+      alert('Solo se permiten archivos de imagen.');
+      continue;
+    }
+    await savePhoto(file);
+  }
+  fileInput.value = '';
+});
+
+// Funciones del admin para habilitar o deshabilitar subidas
+function enableUploads() {
+  localStorage.setItem('uploadAllowed', 'true');
+  alert('Subidas habilitadas.');
+}
+
+function disableUploads() {
+  localStorage.setItem('uploadAllowed', 'false');
+  alert('Subidas deshabilitadas.');
+}
+
+// Inicialización
+window.addEventListener('load', () => {
+  showLogin();
+  loadApprovedPhotos();
+});
