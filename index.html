@@ -11,6 +11,9 @@
     <h1>¡Bienvenido a Flikoo!</h1>
     <input type="text" id="nameInput" placeholder="Ingresa tu nombre" />
     <button id="startBtn" class="btn">¡Comenzar!</button>
+
+    <!-- Botón modo administrador -->
+    <button id="adminBtn" class="btn" style="margin-top: 15px; background-color: #555;">Modo Administrador</button>
   </div>
 
   <div class="screen" id="uploadScreen" style="display:none;">
@@ -29,6 +32,32 @@
     Lo sentimos, el período para subir fotos ya finalizó.
   </p>
 
-  <script src="app.js"></script>
+  <script>
+    document.getElementById("startBtn").addEventListener("click", function () {
+      const name = document.getElementById("nameInput").value.trim();
+      if (name) {
+        if (uploadEnabled) {
+          document.getElementById("userName").textContent = name;
+          document.getElementById("loginScreen").style.display = "none";
+          document.getElementById("uploadScreen").style.display = "block";
+        } else {
+          document.getElementById("uploadClosedMsg").style.display = "block";
+        }
+      }
+    });
+
+    // Botón admin
+    document.getElementById("adminBtn").addEventListener("click", function () {
+      const password = prompt("Ingrese la contraseña para acceder al modo administrador:");
+      if (password === "Flikoo123") {
+        window.location.href = "admin.html";
+      } else if (password !== null) {
+        alert("Contraseña incorrecta.");
+      }
+    });
+
+    // Puedes activar/desactivar esta bandera desde app.js o manualmente aquí:
+    const uploadEnabled = true; // cambia a false si querés desactivar el botón subir
+  </script>
 </body>
 </html>
