@@ -1,5 +1,27 @@
 // app.js
 
+// Contraseña para el acceso administrador
+const ADMIN_PASSWORD = 'Flikoo123';
+
+// Verifica si el acceso admin está autorizado
+function checkAdminAccess() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isAdminParam = urlParams.get('admin') === 'true';
+
+  if (isAdminParam) {
+    let enteredPassword = prompt('Ingrese la contraseña de administrador:');
+    if (enteredPassword !== ADMIN_PASSWORD) {
+      alert('Contraseña incorrecta. Acceso denegado.');
+      window.location.href = window.location.origin; // Redirige a página principal
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
+
+const isAdmin = checkAdminAccess();
+
 // Elementos del DOM
 const loginScreen = document.getElementById('loginScreen');
 const uploadScreen = document.getElementById('uploadScreen');
@@ -85,34 +107,4 @@ function addPhotoToGallery(dataUrl) {
 
 // Cargar fotos aprobadas al iniciar
 function loadApprovedPhotos() {
-  galleryDiv.innerHTML = '';
-  let approvedPhotos = JSON.parse(localStorage.getItem('flikooApprovedPhotos') || '[]');
-  approvedPhotos.forEach(photo => addPhotoToGallery(photo));
-}
-
-// Al cambiar el input file
-fileInput.addEventListener('change', async (e) => {
-  if (!uploadAllowed) {
-    alert('No está permitido subir fotos en este momento.');
-    fileInput.value = '';
-    return;
-  }
-
-  const files = Array.from(e.target.files);
-  if (files.length === 0) return;
-
-  for (const file of files) {
-    if (!file.type.startsWith('image/')) {
-      alert('Solo se permiten archivos de imagen.');
-      continue;
-    }
-    await savePhoto(file);
-  }
-  fileInput.value = ''; // Limpiar input
-});
-
-// Inicialización
-window.addEventListener('load', () => {
-  showLogin();
-  loadApprovedPhotos();
-});
+  galleryDiv.inne
