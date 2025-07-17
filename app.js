@@ -11,7 +11,7 @@ const galleryDiv = document.getElementById('gallery');
 const uploadClosedMsg = document.getElementById('uploadClosedMsg');
 
 let userName = '';
-let uploadAllowed = false;
+let uploadAllowed = true; // Siempre permitido
 
 // Verificar permiso de subida guardado en localStorage
 function checkUploadPermission() {
@@ -58,10 +58,7 @@ function readFileAsDataURL(file) {
   });
 }
 
-// Guardar fotos pendientes para aprobación (opcional según lógica)
-// En este código simplificamos: sube y aprueba automáticamente
-
-// Guardar foto en localStorage como aprobada
+// Guardar fotos aprobadas
 async function savePhoto(file) {
   try {
     const dataUrl = await readFileAsDataURL(file);
@@ -74,7 +71,7 @@ async function savePhoto(file) {
   }
 }
 
-// Añadir foto a la galería visible en la pantalla de subida
+// Añadir foto a la galería visible
 function addPhotoToGallery(dataUrl) {
   const img = document.createElement('img');
   img.src = dataUrl;
@@ -86,7 +83,7 @@ function addPhotoToGallery(dataUrl) {
   galleryDiv.appendChild(img);
 }
 
-// Al cargar la página, cargar fotos ya aprobadas en la galería
+// Cargar fotos aprobadas al iniciar
 function loadApprovedPhotos() {
   galleryDiv.innerHTML = '';
   let approvedPhotos = JSON.parse(localStorage.getItem('flikooApprovedPhotos') || '[]');
@@ -111,7 +108,7 @@ fileInput.addEventListener('change', async (e) => {
     }
     await savePhoto(file);
   }
-  fileInput.value = ''; // Limpiar input para permitir subir la misma foto de nuevo si quieren
+  fileInput.value = ''; // Limpiar input
 });
 
 // Inicialización
